@@ -1,0 +1,103 @@
+<%@page language="java" contentType="text/html; character=UTF-8" pageEncoding="UTF-8" %>
+<%@include file="/common/taglibs.jsp"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Admin Backend</title>
+    <link rel="stylesheet" href="${ctx}/resource/css/pintuer.css">
+    <link rel="stylesheet" href="${ctx}/resource/css/admin.css">
+    <script src="${ctx}/resource/js/jquery.js"></script>
+    <script src="${ctx}/resource/js/pintuer.js"></script>
+</head>
+<body>
+<div class="panel admin-panel">
+    <form action="${ctx}/item/findBySql" id="listform" method="post">
+        <div class="padding border-bottom">
+            <ul class="search" style="padding-left: 10px;">
+                <li>
+                    <a class="button border-main icon-plus-square-o" href="${ctx}/item/add">Add Product</a>
+                </li>
+                <li>
+                    <input type="text" placeholder="Please enter the name" name="name" class="input" value="${obj.name}"
+                        style="width: 250px;line-height: 17px;display: inline-block" />
+                    <a href="javascript:void(0)" onclick="changeSearch()" class="button border-main icon-search">Search</a>
+                </li>
+            </ul>
+        </div>
+    </form>
+    <table class="table table-hover text-center">
+        <tr>
+            <th>Product Name</th>
+            <th>Main Image</th>
+            <th>Price</th>
+            <th>Primary Product Category</th>
+            <th>Secondary Product Category</th>
+            <th>operate</th>
+        </tr>
+    <c:forEach items="${pagers.datas}" var="data" varStatus="l">
+        <tr>
+            <td>${data.name}</td>
+            <td><img src="${data.url1}" alt="" style="width: 100px;height: 100px;"></td>
+            <td>${data.price}</td>
+            <td>${data.yiji.name}</td>
+            <td>${data.erji.name}</td>
+            <td>
+                <a class="button border-main" href="${ctx}/item/update?id=${data.id}"><span class="icon-edit">modify</span> </a>
+                <a class="button border-red" href="${ctx}/item/delete?id=${data.id}"><span class="icon-trash-o">Remove from Sale</span> </a>
+            </td>
+
+        </tr>
+    </c:forEach>
+        <tr>
+            <td colspan="8">
+                <div class="pagelist">
+                    <!--分页开始-->
+                    <pg:pager url="${ctx}/item/findBySql" maxIndexPages="5" items="${pagers.total}" maxPageItems="15" export="curPage=pageNumber">
+                        <pg:last>
+                            Total of${pagers.total}records，total of${pageNumber}pages，
+                        </pg:last>
+                        On${curPage}page
+                        <pg:first>
+                            <a href="${pageUrl}">Homepage</a>
+                        </pg:first>
+                        <pg:prev>
+                            <a href="${pageUrl}">last page</a>
+                        </pg:prev>
+                        <pg:pages>
+                            <c:choose>
+                                <c:when test="${curPage eq pageNumber}">
+                                    <font color="red">[${pageNumber}]</font>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="${pageUrl}">${pageNumber}</a>
+                                </c:otherwise>
+                            </c:choose>
+                        </pg:pages>
+                        <pg:next>
+                            <a href="${pageUrl}">next page</a>
+                        </pg:next>
+                        <pg:last>
+                            <c:choose>
+                                <c:when test="${curPage eq pageNumber}">
+                                    <font color="red">final page</font>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="${pageUrl}">final page</a>
+                                </c:otherwise>
+                            </c:choose>
+                        </pg:last>
+                    </pg:pager>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<script>
+    function changeSearch(){
+        $("#listform").submit();
+    }
+</script>
+</body>
+
+</html>
