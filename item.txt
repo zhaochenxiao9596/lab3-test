@@ -52,7 +52,7 @@
         <tr>
             <td colspan="8">
                 <div class="pagelist">
-                    <!--分页开始-->
+                    <!--Page start-->
                     <pg:pager url="${ctx}/item/findBySql" maxIndexPages="5" items="${pagers.total}" maxPageItems="15" export="curPage=pageNumber">
                         <pg:last>
                             Total of${pagers.total}records，total of${pageNumber}pages，
